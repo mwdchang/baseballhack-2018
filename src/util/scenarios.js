@@ -42,7 +42,7 @@ const sc4 = {
 
 const sc5 = {
   id: 'sc5',
-  name: 'Salary',
+  name: 'Contract salary - what do they deserve',
   players: players,
   xaxis: ['1 million', '15 million'],
   yaxis: ['1 year', '7 years']

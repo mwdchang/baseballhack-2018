@@ -352,20 +352,20 @@ export default {
       const yaxis = this.scenario.yaxis;
 
       canvas.append('rect')
-        .attr('x', 0)
+        .attr('x', 10)
         .attr('y', ymid)
-        .attr('width', W)
+        .attr('width', W-20)
         .attr('height', 1)
         .style('stroke', null)
-        .style('fill', '#CCC');
+        .style('fill', '#AAA');
 
       canvas.append('rect')
         .attr('x', xmid)
-        .attr('y', 0)
+        .attr('y', 10)
         .attr('width', 1)
-        .attr('height', H)
+        .attr('height', H-20)
         .style('stroke', null)
-        .style('fill', '#CCC');
+        .style('fill', '#AAA');
       
       canvas.append('text')
         .attr('x', 0)
@@ -413,7 +413,7 @@ export default {
 }
 
 .button {
-  margin: 3px;
+  margin: 5px;
   padding: 3px;
   background: #ddd;
   border: 1px solid #444;
