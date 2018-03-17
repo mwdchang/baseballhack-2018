@@ -84,8 +84,8 @@ export default {
       }, 1000);
     },
     view() {
-      this.showResult = true;
       setTimeout(() => {
+        this.showResult = true;
         this.processResults();
       }, 300);
     },
@@ -150,7 +150,47 @@ export default {
         .attr('height', 50)
         .attr('x', (d, i) => d.x)
         .attr('y', (d, i) => d.y)
-        .style('opacity', 0.85);
+        .style('opacity', 0.85)
+        .on('mouseover', (d) => {
+          const player = Stats.getPlayer(d.id);
+          resultCanvas.append('circle')
+            .classed('annotation', true)
+            .attr('cx', d.x+25)
+            .attr('cy', d.y+25)
+            .attr('r', 35)
+            .style('fill', 'none')
+            .style('stroke', '#389')
+            .style('stroke-width', 2);
+
+          resultCanvas.append('text')
+            .classed('annotation', true)
+            .attr('x', d.x+65)
+            .attr('y', d.y+10)
+            .style('stroke', 'none')
+            .style('fill', '#389')
+            .style('font-size', '13')
+            .text('AB:' + player['AB']);
+          resultCanvas.append('text')
+            .classed('annotation', true)
+            .attr('x', d.x+65)
+            .attr('y', d.y+30)
+            .style('stroke', 'none')
+            .style('fill', '#389')
+            .style('font-size', '13')
+            .text('H:' + player['H']);
+          resultCanvas.append('text')
+            .classed('annotation', true)
+            .attr('x', d.x+65)
+            .attr('y', d.y+50)
+            .style('stroke', 'none')
+            .style('fill', '#389')
+            .style('font-size', '13')
+            .text('HR:' + player['HR']);
+        })
+        .on('mouseout', ()=> {
+          d3.selectAll('.annotation').remove();
+        });
+
     },
     create() {
       this.scenario.players.forEach( player => {
@@ -194,8 +234,6 @@ export default {
         .attr('y', (d, i) => d.y)
         .on('mouseover', (d) => {
           const player = Stats.getPlayer(d.id);
-          console.log('hi', player);
-
           this.canvas.append('circle')
             .classed('annotation', true)
             .attr('cx', d.x+25)
@@ -203,7 +241,7 @@ export default {
             .attr('r', 35)
             .style('fill', 'none')
             .style('stroke', '#389')
-            .style('stroke-width', 3);
+            .style('stroke-width', 2);
 
           this.canvas.append('text')
             .classed('annotation', true)
@@ -229,8 +267,6 @@ export default {
             .style('fill', '#389')
             .style('font-size', '13')
             .text('HR:' + player['HR']);
-
-
         })
         .on('mouseout', ()=> {
           d3.selectAll('.annotation').remove();
