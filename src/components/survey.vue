@@ -1,9 +1,15 @@
 <template>
-  <div class="survey">
-    <div class="container">
-      <svg class="canvas"></svg>
+  <div class="main-container">
+    <div class="survey">
+      <span v-if="scenario">{{scenario.id}} (You)</span>
+      <div class="survey-container">
+        <svg class="canvas"></svg>
+      </div>
+      <div class="button" @click="submit">Submit</div>
     </div>
-    <div class="button" @click="submit">Submit</div>
+    <div class="result">
+      <span v-if="scenario">{{scenario.id}} (Everyone else)</span>
+    </div>
   </div>
 </template>
 
@@ -17,20 +23,11 @@ import FB from '../util/firebase';
 export default {
   name: 'survey',
   props: ['sc'],
-  /*
   data() {
     return {
-      players: [
-        {id: 1, x: 0, y: 0},
-        {id: 2, x: 0, y: 0},
-        {id: 3, x: 0, y: 0},
-        {id: 4, x: 0, y: 0}
-      ],
-      xaxis: ['Underrated', 'Overrated'],
-      yaxis: ['Replacement-level', 'Hall worthy']
+      scenario: null
     }
   },
-  */
   watch: {
     sc: function scChanged() {
       if (this.sc === null) return;
@@ -44,7 +41,7 @@ export default {
     }
   },
   mounted() {
-    d3.select('.container')
+    d3.select('.survey-container')
       .style('width', W+'px')
       .style('height', H+'px');
     /*
@@ -149,10 +146,16 @@ export default {
 </script>
 
 <style>
-.survey {
+.main-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.survey, .result {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-right: 20px;
 }
 
 .button {
