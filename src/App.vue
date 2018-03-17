@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <h3>The Opinionator <i class="fa fa-refresh refresh" @click="switchScenario"></i></h3>
+    <h3>The Opinionator <i class="fa fa-refresh refresh" @click="switchScenario"></i>
+    </h3>
+    <div><small>Your opinion matters!!</small></div>
     <survey :sc="scenario"/>
   </div>
 </template>
@@ -10,6 +12,7 @@ import HelloWorld from './components/HelloWorld';
 import Survey from './components/survey';
 import Scenarios from './util/scenarios';
 import FB from './util/firebase';
+import Stats from './util/stats';
 
 export default {
   name: 'App',
@@ -23,7 +26,13 @@ export default {
   },
   mounted() {
     FB.init();
-    this.scenario = Scenarios.getScenario();
+    this.scenario = Scenarios.getRandomScenario();
+
+    d3.csv('static/Batting.csv', function(data) {
+      console.log('hihi', data);
+      Stats.loadBatting(data);
+    });
+
   },
   methods: {
     switchScenario() {

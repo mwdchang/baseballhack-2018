@@ -3,7 +3,9 @@
     <div class="survey">
       <span v-if="scenario">{{scenario.id}} (You)</span>
       <div class="survey-container">
-        <svg class="canvas-survey"></svg>
+        <svg class="canvas-survey">
+          <g></g>
+        </svg>
       </div>
       <div style="display:flex; flex-direction: row">
         <div class="button" @click="submit">Submit</div>
@@ -13,7 +15,9 @@
     <div class="result" v-if="showResult === true">
       <span v-if="scenario">{{scenario.id}} (Everyone else)</span>
       <div class="result-container">
-        <svg class="canvas-result"></svg>
+        <svg class="canvas-result">
+          <g></g>
+        </svg>
       </div>
       <div class="button" @click="animate">Animate</div>
     </div>
@@ -26,6 +30,7 @@ const H = 400;
 const W = 400;
 
 import FB from '../util/firebase';
+import Stats from '../util/stats';
 
 export default {
   name: 'survey',
@@ -41,7 +46,7 @@ export default {
       if (this.sc === null) return;
 
       this.showResult = false;
-      this.canvas = d3.select('.canvas-survey');
+      this.canvas = d3.select('.canvas-survey').select('g');
       this.canvas.selectAll('*').remove();
 
       this.scenario = _.cloneDeep(this.sc);
@@ -53,7 +58,7 @@ export default {
   },
   methods: {
     animate() {
-      const resultCanvas = d3.select('.canvas-result');
+      const resultCanvas = d3.select('.canvas-result').select('g');
       resultCanvas.selectAll('.player')
         .transition()
         .duration(800)
@@ -80,7 +85,9 @@ export default {
     },
     view() {
       this.showResult = true;
-      this.processResults();
+      setTimeout(() => {
+        this.processResults();
+      }, 300);
     },
     submit() {
       const data = this.canvas.selectAll('.player').data();
@@ -90,7 +97,7 @@ export default {
       this.showResult = true;
       setTimeout(() => {
         this.processResults();
-      }, 200);
+      }, 300);
     },
     processResults() {
       FB.readDB('/bh2018' + this.scenario.id).then( resp => {
@@ -119,7 +126,7 @@ export default {
       });
     },
     renderOther(agg) {
-      const resultCanvas = d3.select('.canvas-result');
+      const resultCanvas = d3.select('.canvas-result').select('g');
       resultCanvas.selectAll('*').remove();
       this.initialize(resultCanvas);
 
@@ -152,6 +159,7 @@ export default {
       });
 
       function dragstarted(d) {
+        d3.selectAll('.annotation').remove();
       }
       function dragged(d) {
         d3.select(this)
@@ -180,9 +188,57 @@ export default {
         .attr('xlink:href', d => d.img)
         .attr('width', 50)
         .attr('height', 50)
+        // .attr('clip-path', 'url(#circleView)')
         .style('opacity', 0.85)
         .attr('x', (d, i) => d.x)
         .attr('y', (d, i) => d.y)
+        .on('mouseover', (d) => {
+          const player = Stats.getPlayer(d.id);
+          console.log('hi', player);
+
+          this.canvas.append('circle')
+            .classed('annotation', true)
+            .attr('cx', d.x+25)
+            .attr('cy', d.y+25)
+            .attr('r', 35)
+            .style('fill', 'none')
+            .style('stroke', '#389')
+            .style('stroke-width', 3);
+
+          this.canvas.append('text')
+            .classed('annotation', true)
+            .attr('x', d.x+65)
+            .attr('y', d.y+10)
+            .style('stroke', 'none')
+            .style('fill', '#389')
+            .style('font-size', '13')
+            .text('AB:' + player['AB']);
+          this.canvas.append('text')
+            .classed('annotation', true)
+            .attr('x', d.x+65)
+            .attr('y', d.y+30)
+            .style('stroke', 'none')
+            .style('fill', '#389')
+            .style('font-size', '13')
+            .text('H:' + player['H']);
+          this.canvas.append('text')
+            .classed('annotation', true)
+            .attr('x', d.x+65)
+            .attr('y', d.y+50)
+            .style('stroke', 'none')
+            .style('fill', '#389')
+            .style('font-size', '13')
+            .text('HR:' + player['HR']);
+
+
+        })
+        .on('mouseout', ()=> {
+          d3.selectAll('.annotation').remove();
+        })
+        .on('click', (d) => {
+          let url = 'https://www.baseball-reference.com/players/' + d.id.substring(0, 1) + '/' + d.id + '.shtml';
+          window.open(url);
+        })
         .call(drag);
     },
     initialize(canvas) {
@@ -263,6 +319,8 @@ export default {
   padding: 3px;
   background: #bbb;
   border: 1px solid #444;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
 .button:hover {
@@ -279,6 +337,7 @@ svg {
 .player {
   width: 30;
   height: 30;
+  cursor: grab;
 }
 </style>
 
