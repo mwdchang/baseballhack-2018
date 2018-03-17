@@ -225,7 +225,13 @@ export default {
       bars.append('image')
         .attr('width', 50)
         .attr('height', 50)
-        .attr('xlink:href', d => d.img);
+        .attr('xlink:href', d => d.img)
+        .style('cursor', 'pointer')
+        .on('click', (d) => {
+          let url = 'https://www.baseball-reference.com/players/' + d.id.substring(0, 1) + '/' + d.id + '.shtml';
+          window.open(url);
+        });
+
 
       bars.append('rect')
         .attr('x', 50)
@@ -424,6 +430,7 @@ svg {
   width: 100%;
   height: 100%;
   border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 .player {
