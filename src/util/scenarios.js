@@ -23,7 +23,7 @@ const sc2 = {
 };
 
 const sc3 = {
-  id: 'day-night-difference',
+  id: 'bench-or-start',
   players: players,
   xaxis: ['Bench', 'Start'],
   yaxis: ['', '']

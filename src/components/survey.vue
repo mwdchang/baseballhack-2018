@@ -5,7 +5,10 @@
       <div class="survey-container">
         <svg class="canvas-survey"></svg>
       </div>
-      <div class="button" @click="submit">Submit</div>
+      <div style="display:flex; flex-direction: row">
+        <div class="button" @click="submit">Submit</div>
+        <div class="button" @click="view">View</div>
+      </div>
     </div>
     <div class="result" v-if="showResult === true">
       <span v-if="scenario">{{scenario.id}} (Everyone else)</span>
@@ -54,6 +57,7 @@ export default {
       resultCanvas.selectAll('.player')
         .transition()
         .duration(800)
+        .ease(d3.easeLinear)
         .attr('x', (d) => {
           return _.find(this.scenario.players, p => p.id === d.id).x;
         })
@@ -65,13 +69,18 @@ export default {
         resultCanvas.selectAll('.player')
           .transition()
           .duration(800)
+          .ease(d3.easeLinear)
           .attr('x', (d) => {
             return d.x;
           })
           .attr('y', (d) => {
             return d.y;
           });
-      }, 850);
+      }, 1000);
+    },
+    view() {
+      this.showResult = true;
+      this.processResults();
     },
     submit() {
       const data = this.canvas.selectAll('.player').data();
@@ -138,8 +147,8 @@ export default {
     },
     create() {
       this.scenario.players.forEach( player => {
-        player.x = Math.random()*W;
-        player.y = Math.random()*H;
+        player.x = 15 + Math.random()*(W - 30);
+        player.y = 15 + Math.random()*(H - 30);
       });
 
       function dragstarted(d) {
