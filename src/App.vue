@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
 import Survey from './components/survey';
 import Scenarios from './util/scenarios';
 import FB from './util/firebase';
