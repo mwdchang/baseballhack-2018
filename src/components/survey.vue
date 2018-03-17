@@ -12,6 +12,7 @@
       <div class="result-container">
         <svg class="canvas-result"></svg>
       </div>
+      <div class="button" @click="animate">Animate</div>
     </div>
   </div>
 </template>
@@ -48,6 +49,30 @@ export default {
   mounted() {
   },
   methods: {
+    animate() {
+      const resultCanvas = d3.select('.canvas-result');
+      resultCanvas.selectAll('.player')
+        .transition()
+        .duration(800)
+        .attr('x', (d) => {
+          return _.find(this.scenario.players, p => p.id === d.id).x;
+        })
+        .attr('y', (d) => {
+          return _.find(this.scenario.players, p => p.id === d.id).y;
+        });
+
+      setTimeout(()=> {
+        resultCanvas.selectAll('.player')
+          .transition()
+          .duration(800)
+          .attr('x', (d) => {
+            return d.x;
+          })
+          .attr('y', (d) => {
+            return d.y;
+          });
+      }, 850);
+    },
     submit() {
       const data = this.canvas.selectAll('.player').data();
       const key = (new Date()).getTime();
@@ -108,7 +133,8 @@ export default {
         .attr('width', 50)
         .attr('height', 50)
         .attr('x', (d, i) => d.x)
-        .attr('y', (d, i) => d.y);
+        .attr('y', (d, i) => d.y)
+        .style('opacity', 0.85);
     },
     create() {
       this.scenario.players.forEach( player => {
@@ -145,6 +171,7 @@ export default {
         .attr('xlink:href', d => d.img)
         .attr('width', 50)
         .attr('height', 50)
+        .style('opacity', 0.85)
         .attr('x', (d, i) => d.x)
         .attr('y', (d, i) => d.y)
         .call(drag);
