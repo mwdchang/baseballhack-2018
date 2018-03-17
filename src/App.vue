@@ -59,4 +59,8 @@ h3 {
   cursor: pointer;
 }
 
+body {
+  background: #FCFCFC;
+}
+
 </style>

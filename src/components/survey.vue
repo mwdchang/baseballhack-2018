@@ -29,6 +29,8 @@
 const H = 400;
 const W = 400;
 
+const formatter = d3.format(',');
+
 import FB from '../util/firebase';
 import Stats from '../util/stats';
 
@@ -168,7 +170,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('AB:' + player['AB']);
+            .text('AB:' + formatter(player['AB']));
           resultCanvas.append('text')
             .classed('annotation', true)
             .attr('x', d.x+65)
@@ -176,7 +178,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('H:' + player['H']);
+            .text('H:' + formatter(player['H']));
           resultCanvas.append('text')
             .classed('annotation', true)
             .attr('x', d.x+65)
@@ -184,7 +186,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('HR:' + player['HR']);
+            .text('HR:' + formatter(player['HR']));
         })
         .on('mouseout', ()=> {
           d3.selectAll('.annotation').remove();
@@ -232,7 +234,6 @@ export default {
         .attr('xlink:href', d => d.img)
         .attr('width', 50)
         .attr('height', 50)
-        // .attr('clip-path', 'url(#circleView)')
         .style('opacity', 0.85)
         .attr('x', (d, i) => d.x)
         .attr('y', (d, i) => d.y)
@@ -254,7 +255,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('AB:' + player['AB']);
+            .text('AB:' + formatter(player['AB']));
           this.canvas.append('text')
             .classed('annotation', true)
             .attr('x', d.x+65)
@@ -262,7 +263,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('H:' + player['H']);
+            .text('H:' + formatter(player['H']));
           this.canvas.append('text')
             .classed('annotation', true)
             .attr('x', d.x+65)
@@ -270,7 +271,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('HR:' + player['HR']);
+            .text('HR:' + formatter(player['HR']));
         })
         .on('mouseout', ()=> {
           d3.selectAll('.annotation').remove();
