@@ -362,23 +362,27 @@ export default {
       canvas.append('text')
         .attr('x', 0)
         .attr('y', ymid)
+        .style('font-weight', 600)
         .text(xaxis[0]);
 
       canvas.append('text')
         .attr('x', W)
         .attr('y', ymid)
+        .style('font-weight', 600)
         .style('text-anchor', 'end')
         .text(xaxis[1]);
 
       canvas.append('text')
         .attr('x', xmid)
         .attr('y', 15)
+        .style('font-weight', 600)
         .style('text-anchor', 'middle')
         .text(yaxis[1]);
 
       canvas.append('text')
         .attr('x', xmid)
         .attr('y', H-5)
+        .style('font-weight', 600)
         .style('text-anchor', 'middle')
         .text(yaxis[0]);
     }
