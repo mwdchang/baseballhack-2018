@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <h3>The Opinionator <i class="fa fa-refresh refresh" @click="switchScenario"></i>
-    </h3>
+    <h2>The Opinionator <i class="fa fa-refresh refresh" @click="switchScenario"></i></h2>
     <div><small>Your opinion matters!!</small></div>
     <survey :sc="scenario"/>
   </div>
@@ -48,7 +47,7 @@ export default {
   margin-top: 10px;
 }
 
-h3 {
+h3, h2 {
   margin-bottom: 5px;
   margin-top: 5px;
 }
