@@ -48,11 +48,17 @@ const sc5 = {
   yaxis: ['1 year', '7 years']
 };
 
-
+const sc6 = {
+  id: 'sc6',
+  name: 'Worst signing/trade ever',
+  players: players,
+  xaxis: ['Worst', 'Best'],
+  yaxis: ['Low impact', 'High impact']
+};
 
 
 const scenarios = [
-  sc1, sc2, sc3, sc4, sc5
+  sc1, sc2, sc3, sc4, sc5, sc6
 ];
 
 
