@@ -25,7 +25,7 @@
     </div>
 
     <div class="chart" v-if="showResult === true">
-      <span>Difference</span>
+      <span><strong>Difference</strong></span>
       <div class="chart-container">
         <svg class="canvas-chart">
           <g></g>
