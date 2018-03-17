@@ -7,7 +7,7 @@
       </div>
       <div class="button" @click="submit">Submit</div>
     </div>
-    <div class="result">
+    <div class="result" v-if="showResult === true">
       <span v-if="scenario">{{scenario.id}} (Everyone else)</span>
       <div class="result-container">
         <svg class="canvas-result"></svg>
@@ -28,13 +28,15 @@ export default {
   props: ['sc'],
   data() {
     return {
-      scenario: null
+      scenario: null,
+      showResult: false
     }
   },
   watch: {
     sc: function scChanged() {
       if (this.sc === null) return;
 
+      this.showResult = false;
       this.canvas = d3.select('.canvas-survey');
       this.canvas.selectAll('*').remove();
 
@@ -44,18 +46,6 @@ export default {
     }
   },
   mounted() {
-    d3.select('.survey-container')
-      .style('width', W+'px')
-      .style('height', H+'px');
-
-    d3.select('.result-container')
-      .style('width', W+'px')
-      .style('height', H+'px');
-
-    /*
-    this.initialize();
-    this.create();
-    */
   },
   methods: {
     submit() {
@@ -63,6 +53,7 @@ export default {
       const key = (new Date()).getTime();
 
       FB.writeDB('/bh2018' + this.scenario.id + '/' + key, this.scenario.players);
+      this.showResult = true;
       setTimeout(() => {
         this.processResults();
       }, 200);
@@ -159,6 +150,15 @@ export default {
         .call(drag);
     },
     initialize(canvas) {
+      d3.select('.survey-container')
+        .style('width', W+'px')
+        .style('height', H+'px');
+
+      d3.select('.result-container')
+        .style('width', W+'px')
+        .style('height', H+'px');
+
+
       const xmid = W * 0.5;
       const ymid = H * 0.5;
 
@@ -212,6 +212,7 @@ export default {
 .main-container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .survey, .result {
