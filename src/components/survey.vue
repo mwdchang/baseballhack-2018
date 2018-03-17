@@ -9,8 +9,8 @@
 
 <script>
 
-const H = 500;
-const W = 500;
+const H = 400;
+const W = 400;
 
 export default {
   name: 'survey',
@@ -31,9 +31,7 @@ export default {
   */
   watch: {
     sc: function scChanged() {
-      console.log('debug');
       if (this.sc === null) return;
-      console.log('debug 2', this.sc);
 
       this.canvas = d3.select('.canvas');
       this.scenario = _.cloneDeep(this.sc);
@@ -57,9 +55,6 @@ export default {
       console.log('submitting', data);
     },
     create() {
-      console.log('creating....');
-      const testImg = 'https://d3k2oh6evki4b7.cloudfront.net/req/201802130/images/headshots/e/e31675e7_davis.jpg';
-
       this.scenario.players.forEach( player => {
         player.x = Math.random()*W;
         player.y = Math.random()*H;
@@ -91,7 +86,7 @@ export default {
         .enter()
         .append('image')
         .classed('player', true)
-        .attr('xlink:href', testImg)
+        .attr('xlink:href', d => d.img)
         .attr('width', 50)
         .attr('height', 50)
         .attr('x', (d, i) => d.x)
@@ -99,8 +94,8 @@ export default {
         .call(drag);
     },
     initialize() {
-      const xmid = 250;
-      const ymid = 250;
+      const xmid = W * 0.5;
+      const ymid = H * 0.5;
 
       const xaxis = this.scenario.xaxis;
       const yaxis = this.scenario.yaxis;

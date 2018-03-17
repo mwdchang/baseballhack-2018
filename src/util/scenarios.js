@@ -1,7 +1,8 @@
 const sc1 = {
   players: [
     { id: 'thomafr04', img: 'https://d3k2oh6evki4b7.cloudfront.net/req/201802130/images/headshots/e/e31675e7_davis.jpg' },
-    { id: 'troutmi01', img: 'https://d3k2oh6evki4b7.cloudfront.net/req/201802130/images/headshots/f/f322d40f_mlbam.jpg' }
+    { id: 'troutmi01', img: 'https://d3k2oh6evki4b7.cloudfront.net/req/201802130/images/headshots/f/f322d40f_mlbam.jpg' },
+    { id: 'hamiljo03', img: 'https://d3k2oh6evki4b7.cloudfront.net/req/201802130/images/headshots/c/c5530155_mlbam.jpg' }
   ],
   xaxis: ['Underrated', 'Overrated'],
   yaxis: ['Replacement-level', 'Hall worthy']
