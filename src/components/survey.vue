@@ -12,6 +12,8 @@
 const H = 400;
 const W = 400;
 
+import FB from '../util/firebase';
+
 export default {
   name: 'survey',
   props: ['sc'],
@@ -34,6 +36,8 @@ export default {
       if (this.sc === null) return;
 
       this.canvas = d3.select('.canvas');
+      this.canvas.selectAll('*').remove();
+
       this.scenario = _.cloneDeep(this.sc);
       this.initialize();
       this.create();
@@ -43,7 +47,6 @@ export default {
     d3.select('.container')
       .style('width', W+'px')
       .style('height', H+'px');
-
     /*
     this.initialize();
     this.create();
@@ -52,7 +55,9 @@ export default {
   methods: {
     submit() {
       const data = this.canvas.selectAll('.player').data();
-      console.log('submitting', data);
+      const key = (new Date()).getTime();
+
+      FB.writeDB('/bh2018' + this.scenario.id + '/' + key, {'test':1});
     },
     create() {
       this.scenario.players.forEach( player => {

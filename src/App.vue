@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h3>The Opinionator</h3>
+    <h3>The Opinionator <i class="fa fa-refresh refresh" @click="switchScenario"></i></h3>
     <survey :sc="scenario"/>
   </div>
 </template>
@@ -9,6 +9,7 @@
 import HelloWorld from './components/HelloWorld';
 import Survey from './components/survey';
 import Scenarios from './util/scenarios';
+import FB from './util/firebase';
 
 export default {
   name: 'App',
@@ -21,7 +22,13 @@ export default {
     Survey
   },
   mounted() {
+    FB.init();
     this.scenario = Scenarios.getScenario();
+  },
+  methods: {
+    switchScenario() {
+      this.scenario = Scenarios.getRandomScenario();
+    }
   }
 }
 </script>
@@ -40,4 +47,11 @@ h3 {
   margin-bottom: 5px;
   margin-top: 5px;
 }
+
+
+.refresh:hover {
+  color: #F80;
+  cursor: pointer;
+}
+
 </style>
