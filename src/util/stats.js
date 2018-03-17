@@ -16,7 +16,6 @@ export default class Stats {
       batting[id].H += +d['H'];
       batting[id].AB += +d['AB'];
     });
-    console.log('batting', batting['thomafr04']);
   }
 
   static getPlayer(id) {

@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="result" v-if="showResult === true">
-      <span v-if="scenario">{{scenario.name}} (Everyone else)</span>
+      <span v-if="scenario">{{scenario.name}} (Average opinion)</span>
       <div class="result-container">
         <svg class="canvas-result">
           <g></g>
@@ -357,14 +357,14 @@ export default {
 .button {
   margin: 3px;
   padding: 3px;
-  background: #bbb;
+  background: #ddd;
   border: 1px solid #444;
   border-radius: 4px;
   font-weight: 600;
 }
 
 .button:hover {
-  background: #ddd;
+  background: #eee;
   cursor: pointer;
 }
 
