@@ -2,7 +2,7 @@
   <div class="main-container">
 
     <div class="survey">
-      <span v-if="scenario">{{scenario.name}}</span>
+      <span v-if="scenario"><strong>{{scenario.name}}</strong></span>
       <div class="survey-container">
         <svg class="canvas-survey">
           <g></g>
@@ -15,7 +15,7 @@
     </div>
 
     <div class="result" v-if="showResult === true">
-      <span v-if="scenario">{{scenario.name}} (Average opinion)</span>
+      <span v-if="scenario"><strong>{{scenario.name}} (Average opinion)</strong></span>
       <div class="result-container">
         <svg class="canvas-result">
           <g></g>
@@ -172,10 +172,10 @@ export default {
           const player = Stats.getPlayer(d.id);
           resultCanvas.append('rect')
             .classed('annotation', true)
-            .attr('x', d.x-5)
-            .attr('y', d.y-5)
-            .attr('width', 60)
-            .attr('height', 60)
+            .attr('x', d.x-2)
+            .attr('y', d.y-2)
+            .attr('width', 54)
+            .attr('height', 54)
             .style('fill', 'none')
             .style('stroke', '#389')
             .style('stroke-width', 1);
@@ -289,10 +289,10 @@ export default {
           const player = Stats.getPlayer(d.id);
           this.canvas.append('rect')
             .classed('annotation', true)
-            .attr('x', d.x-5)
-            .attr('y', d.y-5)
-            .attr('width', 60)
-            .attr('height', 60)
+            .attr('x', d.x-2)
+            .attr('y', d.y-2)
+            .attr('width', 54)
+            .attr('height', 54)
             .style('fill', 'none')
             .style('stroke', '#389')
             .style('stroke-width', 1);
@@ -368,13 +368,13 @@ export default {
         .style('fill', '#AAA');
       
       canvas.append('text')
-        .attr('x', 0)
+        .attr('x', 10)
         .attr('y', ymid)
         .style('font-weight', 600)
         .text(xaxis[0]);
 
       canvas.append('text')
-        .attr('x', W)
+        .attr('x', W-10)
         .attr('y', ymid)
         .style('font-weight', 600)
         .style('text-anchor', 'end')
@@ -382,14 +382,14 @@ export default {
 
       canvas.append('text')
         .attr('x', xmid)
-        .attr('y', 15)
+        .attr('y', 20)
         .style('font-weight', 600)
         .style('text-anchor', 'middle')
         .text(yaxis[1]);
 
       canvas.append('text')
         .attr('x', xmid)
-        .attr('y', H-5)
+        .attr('y', H-10)
         .style('font-weight', 600)
         .style('text-anchor', 'middle')
         .text(yaxis[0]);
