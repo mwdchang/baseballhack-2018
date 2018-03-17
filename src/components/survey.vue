@@ -3,12 +3,15 @@
     <div class="survey">
       <span v-if="scenario">{{scenario.id}} (You)</span>
       <div class="survey-container">
-        <svg class="canvas"></svg>
+        <svg class="canvas-survey"></svg>
       </div>
       <div class="button" @click="submit">Submit</div>
     </div>
     <div class="result">
       <span v-if="scenario">{{scenario.id}} (Everyone else)</span>
+      <div class="result-container">
+        <svg class="canvas-result"></svg>
+      </div>
     </div>
   </div>
 </template>
@@ -32,11 +35,11 @@ export default {
     sc: function scChanged() {
       if (this.sc === null) return;
 
-      this.canvas = d3.select('.canvas');
+      this.canvas = d3.select('.canvas-survey');
       this.canvas.selectAll('*').remove();
 
       this.scenario = _.cloneDeep(this.sc);
-      this.initialize();
+      this.initialize(this.canvas);
       this.create();
     }
   },
@@ -44,6 +47,11 @@ export default {
     d3.select('.survey-container')
       .style('width', W+'px')
       .style('height', H+'px');
+
+    d3.select('.result-container')
+      .style('width', W+'px')
+      .style('height', H+'px');
+
     /*
     this.initialize();
     this.create();
@@ -54,7 +62,62 @@ export default {
       const data = this.canvas.selectAll('.player').data();
       const key = (new Date()).getTime();
 
-      FB.writeDB('/bh2018' + this.scenario.id + '/' + key, {'test':1});
+      FB.writeDB('/bh2018' + this.scenario.id + '/' + key, this.scenario.players);
+      setTimeout(() => {
+        this.processResults();
+      }, 200);
+    },
+    processResults() {
+      FB.readDB('/bh2018' + this.scenario.id).then( resp => {
+        const results = resp.val();
+        const len = Object.keys(results).length;
+        const agg = {};
+
+        console.log('processing result');
+        _.forEach(results, (v, k) => {
+          v.forEach( player => {
+            const id = player.id;
+            if (agg.hasOwnProperty(id) === false) {
+              agg[id] = {x:0, y:0, img: player.img};
+            }
+            agg[id].x += player.x;
+            agg[id].y += player.y;
+          });
+        });
+
+        _.forEach(agg, (v, k) => {
+          v.x /= len;
+          v.y /= len;
+        });
+
+        this.renderOther(agg);
+      });
+    },
+    renderOther(agg) {
+      const resultCanvas = d3.select('.canvas-result');
+      resultCanvas.selectAll('*').remove();
+      this.initialize(resultCanvas);
+
+      let players = [];
+      _.forEach(agg, (v, k) => {
+        players.push({
+          id: k,
+          x: v.x,
+          y: v.y,
+          img: v.img
+        });
+      });
+
+      resultCanvas.selectAll('.player')
+        .data(players)
+        .enter()
+        .append('image')
+        .classed('player', true)
+        .attr('xlink:href', d => d.img)
+        .attr('width', 50)
+        .attr('height', 50)
+        .attr('x', (d, i) => d.x)
+        .attr('y', (d, i) => d.y);
     },
     create() {
       this.scenario.players.forEach( player => {
@@ -95,14 +158,14 @@ export default {
         .attr('y', (d, i) => d.y)
         .call(drag);
     },
-    initialize() {
+    initialize(canvas) {
       const xmid = W * 0.5;
       const ymid = H * 0.5;
 
       const xaxis = this.scenario.xaxis;
       const yaxis = this.scenario.yaxis;
 
-      this.canvas.append('rect')
+      canvas.append('rect')
         .attr('x', 0)
         .attr('y', ymid)
         .attr('width', W)
@@ -110,7 +173,7 @@ export default {
         .style('stroke', null)
         .style('fill', '#CCC');
 
-      this.canvas.append('rect')
+      canvas.append('rect')
         .attr('x', xmid)
         .attr('y', 0)
         .attr('width', 1)
@@ -118,24 +181,24 @@ export default {
         .style('stroke', null)
         .style('fill', '#CCC');
       
-      this.canvas.append('text')
+      canvas.append('text')
         .attr('x', 0)
         .attr('y', ymid)
         .text(xaxis[0]);
 
-      this.canvas.append('text')
+      canvas.append('text')
         .attr('x', W)
         .attr('y', ymid)
         .style('text-anchor', 'end')
         .text(xaxis[1]);
 
-      this.canvas.append('text')
+      canvas.append('text')
         .attr('x', xmid)
         .attr('y', 15)
         .style('text-anchor', 'middle')
         .text(yaxis[1]);
 
-      this.canvas.append('text')
+      canvas.append('text')
         .attr('x', xmid)
         .attr('y', H-5)
         .style('text-anchor', 'middle')
