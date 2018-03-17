@@ -20,7 +20,7 @@ const sc2 = {
   id: 'talented-jerk',
   name: 'Talented or just a jerk',
   players: players,
-  xaxis: ['Jerk', 'Nice guy'],
+  xaxis: ['Jerk', 'Nice'],
   yaxis: ['Pedestrian', 'Talented']
 };
 

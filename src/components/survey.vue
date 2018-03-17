@@ -1,5 +1,6 @@
 <template>
   <div class="main-container">
+
     <div class="survey">
       <span v-if="scenario">{{scenario.name}}</span>
       <div class="survey-container">
@@ -12,6 +13,7 @@
         <div class="button" @click="view">View</div>
       </div>
     </div>
+
     <div class="result" v-if="showResult === true">
       <span v-if="scenario">{{scenario.name}} (Average opinion)</span>
       <div class="result-container">
@@ -21,13 +23,24 @@
       </div>
       <div class="button" @click="animate">Animate</div>
     </div>
+
+    <div class="chart" v-if="showResult === true">
+      <span>Difference</span>
+      <div class="chart-container">
+        <svg class="canvas-chart">
+          <g></g>
+        </svg>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
 <script>
 
-const H = 400;
-const W = 400;
+const H = 450;
+const W = 450;
 
 const formatter = d3.format(',');
 
@@ -127,6 +140,9 @@ export default {
       });
     },
     renderOther(agg) {
+      const chartCanvas = d3.select('.canvas-chart').select('g');
+      chartCanvas.selectAll('*').remove();
+
       const resultCanvas = d3.select('.canvas-result').select('g');
       resultCanvas.selectAll('*').remove();
       this.initialize(resultCanvas);
@@ -170,7 +186,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('AB:' + formatter(player['AB']));
+            .text('AB: ' + formatter(player['AB']));
           resultCanvas.append('text')
             .classed('annotation', true)
             .attr('x', d.x+65)
@@ -178,7 +194,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('H:' + formatter(player['H']));
+            .text('H: ' + formatter(player['H']));
           resultCanvas.append('text')
             .classed('annotation', true)
             .attr('x', d.x+65)
@@ -186,7 +202,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('HR:' + formatter(player['HR']));
+            .text('HR: ' + formatter(player['HR']));
         })
         .on('mouseout', ()=> {
           d3.selectAll('.annotation').remove();
@@ -196,12 +212,37 @@ export default {
           window.open(url);
         });
 
+      let bars = chartCanvas.selectAll('.bar')
+        .data(this.scenario.players)
+        .enter()
+        .append('g')
+        .classed('bar', true)
+        .attr('transform', (d, i) => {
+          return 'translate(10,' + (5 + i*60) + ')';
+        });
+
+      bars.append('image')
+        .attr('width', 50)
+        .attr('height', 50)
+        .attr('xlink:href', d => d.img);
+
+      bars.append('rect')
+        .attr('x', 50)
+        .attr('y', 20)
+        .attr('height', 20)
+        .attr('width', (d) => {
+
+          const o = agg[d.id];
+          const dist = Math.sqrt( (o.x - d.x)*(o.x - d.x) + (o.y - d.y)*(o.y - d.y) );
+          return dist * 0.25;
+        })
+        .style('fill', '#F11');
 
     },
     create() {
       this.scenario.players.forEach( player => {
-        player.x = 15 + Math.random()*(W - 30);
-        player.y = 15 + Math.random()*(H - 30);
+        player.x = 25 + Math.random()*(W - 50);
+        player.y = 25 + Math.random()*(H - 50);
       });
 
       function dragstarted(d) {
@@ -255,7 +296,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('AB:' + formatter(player['AB']));
+            .text('AB: ' + formatter(player['AB']));
           this.canvas.append('text')
             .classed('annotation', true)
             .attr('x', d.x+65)
@@ -263,7 +304,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('H:' + formatter(player['H']));
+            .text('H: ' + formatter(player['H']));
           this.canvas.append('text')
             .classed('annotation', true)
             .attr('x', d.x+65)
@@ -271,7 +312,7 @@ export default {
             .style('stroke', 'none')
             .style('fill', '#389')
             .style('font-size', '13')
-            .text('HR:' + formatter(player['HR']));
+            .text('HR: ' + formatter(player['HR']));
         })
         .on('mouseout', ()=> {
           d3.selectAll('.annotation').remove();
@@ -289,6 +330,10 @@ export default {
 
       d3.select('.result-container')
         .style('width', W+'px')
+        .style('height', H+'px');
+
+      d3.select('.chart-container')
+        .style('width', '200px')
         .style('height', H+'px');
 
 
