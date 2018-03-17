@@ -10,6 +10,7 @@ const players = [
 
 const sc1 = {
   id: 'hall-worth',
+  name: 'Hall of fame worthy',
   players: players,
   xaxis: ['Underrated', 'Overrated'],
   yaxis: ['Replacement-level', 'Hall worthy']
@@ -17,6 +18,7 @@ const sc1 = {
 
 const sc2 = {
   id: 'talented-jerk',
+  name: 'Talented or just a jerk',
   players: players,
   xaxis: ['Jerk', 'Nice guy'],
   yaxis: ['Pedestrian', 'Talented']
@@ -24,14 +26,24 @@ const sc2 = {
 
 const sc3 = {
   id: 'bench-or-start',
+  name: 'Starter or bench warmer',
   players: players,
   xaxis: ['Bench', 'Start'],
   yaxis: ['', '']
 };
 
+const sc4 = {
+  id: 'sc4',
+  name: 'Taking our the aggresions',
+  players: players,
+  xaxis: ['Too passive', 'Too aggressive'],
+  yaxis: ['Bad player', 'Good player']
+};
+
+
 
 const scenarios = [
-  sc1, sc2, sc3
+  sc1, sc2, sc3, sc4
 ];
 
 

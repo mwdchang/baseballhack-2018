@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <div class="survey">
-      <span v-if="scenario">{{scenario.id}} (You)</span>
+      <span v-if="scenario">{{scenario.name}}</span>
       <div class="survey-container">
         <svg class="canvas-survey">
           <g></g>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="result" v-if="showResult === true">
-      <span v-if="scenario">{{scenario.id}} (Everyone else)</span>
+      <span v-if="scenario">{{scenario.name}} (Everyone else)</span>
       <div class="result-container">
         <svg class="canvas-result">
           <g></g>
@@ -105,7 +105,6 @@ export default {
         const len = Object.keys(results).length;
         const agg = {};
 
-        console.log('processing result');
         _.forEach(results, (v, k) => {
           v.forEach( player => {
             const id = player.id;
@@ -189,7 +188,12 @@ export default {
         })
         .on('mouseout', ()=> {
           d3.selectAll('.annotation').remove();
+        })
+        .on('click', (d) => {
+          let url = 'https://www.baseball-reference.com/players/' + d.id.substring(0, 1) + '/' + d.id + '.shtml';
+          window.open(url);
         });
+
 
     },
     create() {
