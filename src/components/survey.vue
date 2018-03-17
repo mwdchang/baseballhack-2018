@@ -14,6 +14,8 @@ const W = 500;
 
 export default {
   name: 'survey',
+  props: ['sc'],
+  /*
   data() {
     return {
       players: [
@@ -26,20 +28,39 @@ export default {
       yaxis: ['Replacement-level', 'Hall worthy']
     }
   },
+  */
+  watch: {
+    sc: function scChanged() {
+      console.log('debug');
+      if (this.sc === null) return;
+      console.log('debug 2', this.sc);
+
+      this.canvas = d3.select('.canvas');
+      this.scenario = _.cloneDeep(this.sc);
+      this.initialize();
+      this.create();
+    }
+  },
   mounted() {
-    this.canvas = d3.select('.canvas');
+    d3.select('.container')
+      .style('width', W+'px')
+      .style('height', H+'px');
+
+    /*
     this.initialize();
-    this.createScenario();
+    this.create();
+    */
   },
   methods: {
     submit() {
-      const data = this.canvas.selectAll('.avatar').data();
+      const data = this.canvas.selectAll('.player').data();
       console.log('submitting', data);
     },
-    createScenario() {
+    create() {
+      console.log('creating....');
       const testImg = 'https://d3k2oh6evki4b7.cloudfront.net/req/201802130/images/headshots/e/e31675e7_davis.jpg';
 
-      this.players.forEach( player => {
+      this.scenario.players.forEach( player => {
         player.x = Math.random()*W;
         player.y = Math.random()*H;
       });
@@ -65,11 +86,11 @@ export default {
         .on("drag", dragged)
         .on("end", dragended);
         
-      this.canvas.selectAll('.avatar')
-        .data(this.players)
+      this.canvas.selectAll('.player')
+        .data(this.scenario.players)
         .enter()
         .append('image')
-        .classed('avatar', true)
+        .classed('player', true)
         .attr('xlink:href', testImg)
         .attr('width', 50)
         .attr('height', 50)
@@ -80,6 +101,9 @@ export default {
     initialize() {
       const xmid = 250;
       const ymid = 250;
+
+      const xaxis = this.scenario.xaxis;
+      const yaxis = this.scenario.yaxis;
 
       this.canvas.append('rect')
         .attr('x', 0)
@@ -100,25 +124,25 @@ export default {
       this.canvas.append('text')
         .attr('x', 0)
         .attr('y', ymid)
-        .text(this.xaxis[0]);
+        .text(xaxis[0]);
 
       this.canvas.append('text')
         .attr('x', W)
         .attr('y', ymid)
         .style('text-anchor', 'end')
-        .text(this.xaxis[1]);
+        .text(xaxis[1]);
 
       this.canvas.append('text')
         .attr('x', xmid)
         .attr('y', 15)
         .style('text-anchor', 'middle')
-        .text(this.yaxis[1]);
+        .text(yaxis[1]);
 
       this.canvas.append('text')
         .attr('x', xmid)
         .attr('y', H-5)
         .style('text-anchor', 'middle')
-        .text(this.yaxis[0]);
+        .text(yaxis[0]);
     }
   }
 }
@@ -129,11 +153,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.container {
-  width: 500px;
-  height: 500px;
 }
 
 .button {
@@ -154,7 +173,7 @@ svg {
   border: 1px solid #ccc;
 }
 
-.avatar {
+.player {
   width: 30;
   height: 30;
 }

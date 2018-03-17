@@ -1,18 +1,27 @@
 <template>
   <div id="app">
-    <survey/>
+    <h3>The Opinionator</h3>
+    <survey :sc="scenario"/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld';
 import Survey from './components/survey';
+import Scenarios from './util/scenarios';
 
 export default {
   name: 'App',
+  data() {
+    return {
+      scenario: null
+    };
+  },
   components: {
-    HelloWorld,
     Survey
+  },
+  mounted() {
+    this.scenario = Scenarios.getScenario();
   }
 }
 </script>
@@ -25,5 +34,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin: 10px;
+}
+
+h3 {
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 </style>
