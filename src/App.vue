@@ -25,7 +25,7 @@ export default {
   },
   mounted() {
     FB.init();
-    this.scenario = Scenarios.getRandomScenario();
+    this.scenario = Scenarios.getScenario();
     d3.csv('static/Batting.csv', function(data) {
       Stats.loadBatting(data);
     });

@@ -40,16 +40,25 @@ const sc4 = {
   yaxis: ['Bad player', 'Good player']
 };
 
+const sc5 = {
+  id: 'sc5',
+  name: 'Salary',
+  players: players,
+  xaxis: ['1 million', '15 million'],
+  yaxis: ['1 year', '7 years']
+};
+
+
 
 
 const scenarios = [
-  sc1, sc2, sc3, sc4
+  sc1, sc2, sc3, sc4, sc5
 ];
 
 
 export default class Scenarios {
   static getScenario() {
-    return scenarios[1];
+    return scenarios[4];
   }
 
   static getRandomScenario() {

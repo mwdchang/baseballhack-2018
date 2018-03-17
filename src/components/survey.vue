@@ -39,8 +39,8 @@
 
 <script>
 
-const H = 450;
-const W = 450;
+const H = 470;
+const W = 470;
 
 const formatter = d3.format(',');
 
@@ -170,14 +170,15 @@ export default {
         .style('opacity', 0.85)
         .on('mouseover', (d) => {
           const player = Stats.getPlayer(d.id);
-          resultCanvas.append('circle')
+          resultCanvas.append('rect')
             .classed('annotation', true)
-            .attr('cx', d.x+25)
-            .attr('cy', d.y+25)
-            .attr('r', 35)
+            .attr('x', d.x-5)
+            .attr('y', d.y-5)
+            .attr('width', 60)
+            .attr('height', 60)
             .style('fill', 'none')
             .style('stroke', '#389')
-            .style('stroke-width', 2);
+            .style('stroke-width', 1);
 
           resultCanvas.append('text')
             .classed('annotation', true)
@@ -280,14 +281,15 @@ export default {
         .attr('y', (d, i) => d.y)
         .on('mouseover', (d) => {
           const player = Stats.getPlayer(d.id);
-          this.canvas.append('circle')
+          this.canvas.append('rect')
             .classed('annotation', true)
-            .attr('cx', d.x+25)
-            .attr('cy', d.y+25)
-            .attr('r', 35)
+            .attr('x', d.x-5)
+            .attr('y', d.y-5)
+            .attr('width', 60)
+            .attr('height', 60)
             .style('fill', 'none')
             .style('stroke', '#389')
-            .style('stroke-width', 2);
+            .style('stroke-width', 1);
 
           this.canvas.append('text')
             .classed('annotation', true)
